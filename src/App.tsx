@@ -7,8 +7,14 @@ function App() {
         apiKey: '',
         model: 'claude-3-7-sonnet-20250219',
         position: {
-            x: window.innerWidth - 80,
-            y: window.innerHeight - 80
+            ball:{
+                x: window.innerWidth - 80,
+                y: window.innerHeight - 80,
+            },
+            dialog: {
+                x: window.innerWidth - 448,
+                y: window.innerHeight - 640,
+            }
         },
         maxHistoryLength: 20,
         systemPrompt: '你是一个ai助手，图片以这种方式输出 如果有相关图片的话尽量要带，但一定要进行格式转换，注意千万不要输出这种![]()的md的图片格式，要用img标签的方式输出图片，例如![操作手册](操作手册.assets\\\\{文件名}.jpg)就是<img src="/docs/操作手册.assets/{文件名}.jpg" style="width:100%"/> 文件名一定要保持一致！。 ',

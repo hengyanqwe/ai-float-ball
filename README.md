@@ -58,10 +58,12 @@ export default App;
 | title | string | "智能客服" | 对话框标题文本 |
 | welcomeMessage | string | "我是您的智能AI助手，请问有什么可以帮到您？我可以回答关于系统功能和使用方法的问题。" | AI的第一句问候语 |
 | headers | Record<string, string> | undefined | 自定义请求头 |
-| position | { x: number; y: number } | { x: window.innerWidth - 80, y: window.innerHeight - 80 } | 悬浮球的初始位置 |
+| position | {ball:{ x: number; y: number },dialog:{ x: number; y: number }} | {     ball:{         x: window.innerWidth - 80,         y: window.innerHeight - 80,     },     dialog: {         x: window.innerWidth - 448,         y: window.innerHeight - 640,     } } | 悬浮球的初始位置 |
 | markedOptions | MarkedOptions | undefined | Markdown渲染配置，使用marked库的原生类型 |
 | customIcons | { ball?: React.ReactNode; user?: React.ReactNode; ai?: React.ReactNode } | undefined | 自定义图标组件 |
 | maxHistoryLength | number | 20 | 最大历史消息数量 |
+
+
 
 ## 高级用法
 

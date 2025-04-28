@@ -6,6 +6,7 @@ import "./keyframes.css";
 import axios, { AxiosResponse } from "axios";
 import { marked } from 'marked';
 import {AIFloatBallConfig} from "../../lib";
+import { positionI } from "../../lib/types";
 
 // 消息接口定义
 interface Message {
@@ -22,8 +23,14 @@ interface IMessage {
 // 默认配置
 const defaultConfig = {
   position: {
-    x: window.innerWidth - 80,
-    y: window.innerHeight - 80
+    ball:{
+      x: window.innerWidth - 80,
+      y: window.innerHeight - 80,
+    },
+    dialog: {
+      x: window.innerWidth - 448,
+      y: window.innerHeight - 640,
+    }
   },
   maxHistoryLength: 20
 };
@@ -36,14 +43,8 @@ const FloatingBall: React.FC<FloatingBallProps> = ({ config = {} }) => {
   // 合并默认配置和用户配置
   const mergedConfig = { ...defaultConfig, ...config } as AIFloatBallConfig;
 
-  const [position, setPosition] = useState(() => ({
-    x: mergedConfig.position?.x || window.innerWidth - 80,
-    y: mergedConfig.position?.y || window.innerHeight - 80,
-  }));
-  const [dialogPosition, setDialogPosition] = useState(() => ({
-    x: mergedConfig.position?(mergedConfig.position.x - 348) : (window.innerWidth - 348),
-    y: mergedConfig.position?(mergedConfig.position.x - 1340) : (window.innerHeight - 1340),
-  }));
+  const [position, setPosition] = useState<positionI>({x: mergedConfig.position!.ball.x, y: mergedConfig.position!.ball.y,});
+  const [dialogPosition, setDialogPosition] = useState<positionI>({x: mergedConfig.position!.dialog.x, y: mergedConfig.position!.dialog.y,});
   const [isDragging, setIsDragging] = useState(false);
   const [isDialogDragging, setIsDialogDragging] = useState(false);
   const [wasDragged, setWasDragged] = useState(false);

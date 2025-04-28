@@ -10,8 +10,8 @@ export interface AIFloatBallConfig {
 
   // 位置配置
   position?: {                    // 初始位置
-    x: number;
-    y: number;
+    ball:positionI,
+    dialog:positionI
   };
 
   // 对话框标题
@@ -44,4 +44,9 @@ export interface AIFloatBallConfig {
 
   // 高级选项
   maxHistoryLength?: number;      // 最大历史消息数量
+}
+
+export interface positionI {
+  x: number;
+  y: number;
 }
