@@ -4,7 +4,7 @@
 
 AI悬浮球是一个React组件，可以在网页上添加一个可拖动的AI聊天助手悬浮球。用户可以通过点击悬浮球打开对话框，与AI助手进行交流。此组件支持自定义位置、图标、API接口、系统提示词、markdown格式等功能。
 
-![image-20250428195225898](C:\Users\user\WebstormProjects\ai-float-ball\assets\image-20250428195225898.png)
+![image-20250428205116238](C:\Users\user\WebstormProjects\ai-float-ball\assets\image-20250428205116238.png)
 
 ## 安装
 
