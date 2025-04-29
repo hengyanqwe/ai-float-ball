@@ -30,7 +30,7 @@ function App() {
   };
 
   return (
-    <FloatingBall config={floatBallConfig} />
+    <FloatingBall {...floatBallConfig} />
   );
 }
 

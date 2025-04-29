@@ -35,11 +35,7 @@ const defaultConfig = {
   maxHistoryLength: 20
 };
 
-interface FloatingBallProps {
-  config: AIFloatBallConfig;
-}
-
-const FloatingBall: React.FC<FloatingBallProps> = ({ config = {} }) => {
+const FloatingBall: React.FC<AIFloatBallConfig> = (config) => {
   // 合并默认配置和用户配置
   const mergedConfig = { ...defaultConfig, ...config } as AIFloatBallConfig;
 
