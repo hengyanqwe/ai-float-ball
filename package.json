@@ -5,7 +5,7 @@
   "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "types": "dist/lib/index.d.ts",
   "files": [
     "dist"
   ],
@@ -13,6 +13,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "build:lib": "tsc -p tsconfig.lib.json && vite build --config vite.lib.config.ts",
+    "pack": "npm pack",
     "lint": "eslint .",
     "preview": "vite preview"
   },
