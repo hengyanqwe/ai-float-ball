@@ -7,6 +7,7 @@ import axios, {AxiosResponse} from "axios";
 import {marked} from 'marked';
 import {AIFloatBallConfig} from "../../lib";
 import {positionI} from "../../lib/types";
+import Color from "color";
 
 // 消息接口定义
 interface Message {
@@ -46,6 +47,9 @@ const FloatingBall: React.FC<AIFloatBallConfig> = (config) => {
         y: mergedConfig.position!.dialog.y,
     };
 
+    // 使用ref来引用容器
+    const containerRef = useRef<HTMLDivElement>(null);
+
     // 使用ref来引用对话框元素
     const dialogRef = useRef<HTMLDivElement>(null);
 
@@ -70,10 +74,26 @@ const FloatingBall: React.FC<AIFloatBallConfig> = (config) => {
         }
     };
 
+    useEffect(() => {
+        // 这里从容器div获取css变量值，如果没有值赋默认值
+        if (containerRef.current) {
+            const computedStyle = getComputedStyle(containerRef.current);
+            const colorPrimary = computedStyle.getPropertyValue('--antTokenVars-colorPrimary').trim() || '#044627';
+            containerRef.current.style.setProperty('--antTokenVars-colorPrimary', colorPrimary);
+
+            // 找到 dialog-header 并设置 80% 透明度背景
+            const dialogHeader = containerRef.current.querySelector('.dialog-header') as HTMLElement;
+            if (dialogHeader) {
+                const colorPrimaryRgba80 = Color(colorPrimary).alpha(0.8).string();
+                dialogHeader.style.background = colorPrimaryRgba80;
+            }
+        }
+    }, []);
+
     return (
         <>
             {createPortal(
-                <div className={styles.ball}>
+                <div className={styles.ball} ref={containerRef}>
                     <Ball handleBallClick={handleBallClick} Icon={mergedConfig.customIcons?.ball} defaultPosition={defaultBallPosition}/>
                     <Dialog
                         dialogRef={dialogRef}

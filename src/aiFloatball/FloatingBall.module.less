@@ -1,9 +1,6 @@
-@antTokenVars-colorPrimary:#044627;
 .ball{
-  --antTokenVars-colorPrimary-extend: var(--antTokenVars-colorPrimary, @antTokenVars-colorPrimary);
   :global{
     .floating-ball {
-      --antTokenVars-colorPrimary: var(--antTokenVars-colorPrimary-extend);
       position: fixed;
       width: 60px;
       height: 60px;
@@ -62,7 +59,6 @@
     }
 
     .dialog {
-      --antTokenVars-colorPrimary: var(--antTokenVars-colorPrimary-extend);
       position: fixed;
       border-radius: 12px;
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 8px rgba(255, 255, 255, 0.2);
@@ -84,7 +80,6 @@
         border-top-left-radius: 12px;
         border-top-right-radius: 12px;
         backdrop-filter: blur(8px);
-        background: rgba(@antTokenVars-colorPrimary, 0.8);
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
         cursor: move; /* 指示可拖动 */
       }
