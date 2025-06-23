@@ -75,19 +75,83 @@ const FloatingBall: React.FC<AIFloatBallConfig> = (config) => {
     };
 
     useEffect(() => {
-        // 这里从容器div获取css变量值，如果没有值赋默认值
-        if (containerRef.current) {
-            const computedStyle = getComputedStyle(containerRef.current);
-            const colorPrimary = computedStyle.getPropertyValue('--antTokenVars-colorPrimary').trim() || '#044627';
-            containerRef.current.style.setProperty('--antTokenVars-colorPrimary', colorPrimary);
+        const updateColorPrimary=(newValue?:string)=>{
+            const computedStyle = getComputedStyle(containerRef.current!);
+            const colorPrimary = newValue || computedStyle.getPropertyValue('--antTokenVars-colorPrimary').trim() || '#044627';
+            containerRef.current!.style.setProperty('--antTokenVars-colorPrimary', colorPrimary);
 
             // 找到 dialog-header 并设置 80% 透明度背景
-            const dialogHeader = containerRef.current.querySelector('.dialog-header') as HTMLElement;
+            const dialogHeader = containerRef.current!.querySelector('.dialog-header') as HTMLElement;
             if (dialogHeader) {
                 const colorPrimaryRgba80 = Color(colorPrimary).alpha(0.8).string();
                 dialogHeader.style.background = colorPrimaryRgba80;
             }
+
         }
+        
+        // 完善的CSS变量监听方案
+        const watchCSSVariable = (element: HTMLElement, variableName: string, callback: (newValue: string, oldValue: string) => void) => {
+            let currentValue = getComputedStyle(element).getPropertyValue(variableName).trim();
+            
+            const checkVariableChange = () => {
+                const newValue = getComputedStyle(element).getPropertyValue(variableName).trim();
+                if (newValue !== currentValue) {
+                    const oldValue = currentValue;
+                    currentValue = newValue;
+                    callback(newValue, oldValue);
+                }
+            };
+            
+            const observer = new MutationObserver(checkVariableChange);
+            
+            // 获取从目标元素到根元素的完整父级链路
+            const getAllParentElements = (targetElement: HTMLElement): HTMLElement[] => {
+                const elements: HTMLElement[] = [];
+                let current: HTMLElement | null = targetElement;
+                
+                // 遍历从目标元素到html元素的完整父级链路
+                while (current) {
+                    elements.push(current);
+                    current = current.parentElement;
+                }
+                
+                return elements;
+            };
+            
+            // 监听完整的父级链路
+            const elementsToWatch = getAllParentElements(element);
+            
+            elementsToWatch.forEach(el => {
+                if (el) {
+                    observer.observe(el, {
+                        attributes: true,
+                        attributeFilter: ['style', 'class']
+                    });
+                }
+            });
+            
+            return observer;
+        };
+        
+        // 监听颜色变量变化
+        let observer: MutationObserver | null = null;
+        if (containerRef.current) {
+            // 先手动执行一遍，然后监听变化执行
+            updateColorPrimary();
+            observer = watchCSSVariable(
+                containerRef.current.parentElement!,
+                '--antTokenVars-colorPrimary',
+                (newValue) => {
+                    updateColorPrimary(newValue);
+                }
+            );
+        }
+        
+        return () => {
+            if (observer) {
+                observer.disconnect();
+            }
+        };
     }, []);
 
     return (
@@ -392,7 +456,7 @@ const Dialog = ({
         newY = Math.max(0, Math.min(newY, window.innerHeight - dialogSize.height));
 
         setDialogPosition({ x: newX, y: newY });
-    }, [dialogPosition]);
+    }, []);
 
     // 对话框指针松开
     const handleDialogPointerUp = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
